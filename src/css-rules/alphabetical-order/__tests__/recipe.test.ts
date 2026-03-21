@@ -121,6 +121,35 @@ run({
             display: 'flex'
           }],
         });
+      `
+    },
+    // Imported local recipe wrapper with global settings recipe
+    {
+      code: `
+        import { componentRecipe } from './component-recipe.css.js';
+
+        const myRecipe = componentRecipe({
+          base: {
+            display: 'flex',
+            alignItems: 'center'
+          }
+        });
+      `,
+      settings: {
+        'vanilla-extract': {
+          recipe: ['componentRecipe'],
+        },
+      },
+      errors: [{ messageId: 'alphabeticalOrder' }],
+      output: `
+        import { componentRecipe } from './component-recipe.css.js';
+
+        const myRecipe = componentRecipe({
+          base: {
+            alignItems: 'center',
+            display: 'flex'
+          }
+        });
       `,
     },
   ],

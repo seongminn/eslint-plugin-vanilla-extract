@@ -138,5 +138,71 @@ run({
         });
       `,
     },
+
+    // Imported local recipe wrapper with global settings recipe
+    {
+      code: `
+        import { componentRecipe } from './recipe.css.js';
+
+        const myRecipe = componentRecipe({
+          base: {
+            backgroundColor: 'white',
+            width: '100%',
+            display: 'flex',
+            position: 'relative'
+          },
+        });
+      `,
+      settings: {
+        'vanilla-extract': {
+          recipe: ['componentRecipe'],
+        },
+      },
+      errors: [{ messageId: 'incorrectOrder' }],
+      output: `
+        import { componentRecipe } from './recipe.css.js';
+
+        const myRecipe = componentRecipe({
+          base: {
+            position: 'relative',
+            display: 'flex',
+            backgroundColor: 'white',
+            width: '100%'
+          },
+        });
+      `,
+    },
+
+        // Recipe with base array in incorrect order
+    {
+      code: `
+        import { componentRecipe } from './recipe.css.js';
+        const myRecipe = componentRecipe({
+          base: [{
+            backgroundColor: 'white',
+            width: '100%',
+            display: 'flex',
+            position: 'relative'
+          }],
+        });
+      `,
+      settings: {
+        'vanilla-extract': {
+          recipe: ['componentRecipe'],
+        },
+      },
+      errors: [{ messageId: 'incorrectOrder' }],
+      output: `
+        import { componentRecipe } from './recipe.css.js';
+        const myRecipe = componentRecipe({
+          base: [{
+            position: 'relative',
+            display: 'flex',
+            backgroundColor: 'white',
+            width: '100%'
+          }],
+        });
+      `,
+    },
   ],
 });
